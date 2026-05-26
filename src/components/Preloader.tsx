@@ -44,8 +44,8 @@ export default function Preloader() {
         {/* Logo Image */}
         <div style={{ zIndex: 1, position: "relative" }}>
           <img 
-            src="/logo.webp" 
-            alt="SRF Logo" 
+            src="/logo.png" 
+            alt="Vance Brown Logo" 
             style={{ 
               height: "70px", 
               width: "auto", 

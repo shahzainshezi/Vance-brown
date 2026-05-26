@@ -38,7 +38,7 @@ export default function CategoryPage() {
             <h2 style={{ fontSize: '2rem', color: '#0f172a', marginBottom: '0.5rem' }}>{category.name} Collection</h2>
             <p style={{ color: '#64748b' }}>Showing {categoryProducts.length} items</p>
           </div>
-          <Link href="/" style={{ color: '#82132B', fontWeight: '600', textDecoration: 'none' }}>
+          <Link href="/" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>
             <i className='bx bx-left-arrow-alt'></i> Back to all products
           </Link>
         </div>

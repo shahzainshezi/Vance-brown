@@ -3,9 +3,9 @@
     --bg-dark: #f8fafc; /* Main background light gray */
     --bg-card: #ffffff; /* Card background white */
     --bg-card-hover: #f1f5f9;
-    --primary: #990A27; /* SRF Red */
-    --primary-glow: rgba(153, 10, 39, 0.3);
-    --accent: #ff4500;
+    --primary: #0070FF; /* Vance Royal Blue */
+    --primary-glow: rgba(0, 112, 255, 0.3);
+    --accent: #FFB800; /* Vance Gold/Yellow */
     --text-main: #0f172a; /* Dark text */
     --text-muted: #64748b; /* Medium gray text */
     --border: rgba(0, 0, 0, 0.08); /* Dark borders */
@@ -418,12 +418,12 @@ body {
 
 .hero-badge {
     display: inline-block;
-    background: rgba(130, 19, 43, 0.6); /* #82132B with opacity */
+    background: rgba(0, 112, 255, 0.6); /* Vance Blue with opacity */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 15px rgba(130, 19, 43, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 112, 255, 0.3);
     padding: 0.5rem 1.2rem;
     border-radius: 50px;
     font-size: 0.8rem;
@@ -530,7 +530,7 @@ body {
 
 /* Infinite Marquee */
 .marquee-section {
-    background: #82132B;
+    background: var(--primary);
     color: white;
     padding: 1.2rem 0;
     overflow: hidden;
@@ -611,25 +611,26 @@ body {
 .bento-content {
     position: absolute;
     bottom: 2rem;
-    left: 3rem;
-    right: 3rem;
+    left: 2rem;
+    right: 2rem;
     z-index: 2;
     color: white;
     text-align: center;
-    padding: 1.2rem;
-    background: rgba(130, 19, 43, 0.6); /* Red theme glass (Default) */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: all 0.4s;
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.65); /* Premium dark frosted glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .bento-item:hover .bento-content {
-    background: rgba(15, 23, 42, 0.7); /* Dark Glass on hover */
-    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--primary); /* Glow with primary blue on hover! */
+    border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 112, 255, 0.4);
 }
 
 .bento-content h3 {
@@ -763,7 +764,8 @@ body {
 .product-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: #ffffff;
     transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
@@ -829,7 +831,7 @@ body {
     background: var(--primary);
     color: white;
     transform: scale(1.03);
-    box-shadow: 0 10px 25px rgba(153, 10, 39, 0.4);
+    box-shadow: 0 10px 25px var(--primary-glow);
 }
 
 .product-info {
@@ -894,7 +896,7 @@ body {
 .banner-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(130, 19, 43, 0.9); /* Deep red theme overlay */
+    background: rgba(0, 112, 255, 0.9); /* Deep blue theme overlay */
     mix-blend-mode: multiply;
 }
 
@@ -1224,14 +1226,14 @@ body {
 .page-hero-overlay-side {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(130,19,43,0.45) 0%, transparent 60%);
+    background: linear-gradient(to right, rgba(0,112,255,0.2) 0%, transparent 60%);
 }
 
 /* Dark-type background (Admin) */
 .page-hero-bg-dark {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #002b66 55%, #0f172a 100%);
 }
 .page-hero-blob-red {
     position: absolute;
@@ -1240,7 +1242,7 @@ body {
     width: 500px;
     height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(130,19,43,0.4) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(0,112,255,0.15) 0%, transparent 65%);
     pointer-events: none;
 }
 .page-hero-blob-purple {
@@ -1250,7 +1252,7 @@ body {
     width: 350px;
     height: 350px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(255,184,0,0.08) 0%, transparent 65%);
     pointer-events: none;
 }
 .page-hero-grid {
@@ -1313,7 +1315,7 @@ body {
 }
 
 .page-hero-highlight {
-    background: linear-gradient(90deg, #ef4444, #82132B);
+    background: linear-gradient(90deg, var(--accent), var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1352,8 +1354,8 @@ body {
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    border: 3px solid rgba(130, 19, 43, 0.6);
-    box-shadow: 0 0 30px rgba(130, 19, 43, 0.4);
+    border: 3px solid rgba(0, 112, 255, 0.6);
+    box-shadow: 0 0 30px rgba(0, 112, 255, 0.4);
     animation: pulseAnim 1.5s infinite ease-out;
 }
 .preloader-pulse-2 {
@@ -1361,7 +1363,7 @@ body {
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    border: 1px solid rgba(130, 19, 43, 0.2);
+    border: 1px solid rgba(0, 112, 255, 0.2);
     animation: pulseAnim 1.5s infinite ease-out 0.3s;
 }
 @keyframes pulseAnim {
@@ -1423,9 +1425,9 @@ body {
 }
 
 .control-btn:hover {
-    background: #82132B;
+    background: var(--primary);
     color: white;
-    border-color: #82132B;
+    border-color: var(--primary);
     transform: translateY(-2px);
 }
 

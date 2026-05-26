@@ -94,7 +94,7 @@ export default function Home() {
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <div className="hero-badge">EMPLOYEE EXCLUSIVE PORTAL</div>
-          <h1 className="hero-title">WELCOME TO <br /><span className="text-gradient">SRF APPAREL</span></h1>
+          <h1 className="hero-title">WELCOME TO <br /><span className="text-gradient">VANCE BROWN</span></h1>
           <p className="hero-subtitle">Equip yourself with premium, job-site ready gear using your admin-assigned credits.
             No credit cards required.</p>
           <div className="hero-buttons">
@@ -132,7 +132,7 @@ export default function Home() {
       <section id="categories" className="category-section">
         <div className="section-container">
           <div className="carousel-header">
-            <h2 className="section-title" style={{ marginBottom: 0 }}>Use Your SRF Bucks Here!</h2>
+            <h2 className="section-title" style={{ marginBottom: 0 }}>Use Your Builders Bucks Here!</h2>
             <div className="carousel-controls">
               <button className="control-btn" onClick={() => scrollCarousel('left', catCarouselRef)}><i className='bx bx-chevron-left'></i></button>
               <button className="control-btn" onClick={() => scrollCarousel('right', catCarouselRef)}><i className='bx bx-chevron-right'></i></button>
@@ -141,14 +141,14 @@ export default function Home() {
           <div className="carousel-container" ref={catCarouselRef} style={{ paddingBottom: '2rem' }}>
             {categories.map((cat, idx) => {
               const bgImages: { [key: string]: string } = {
-                'SHIRTS & POLOS': 'https://srfapparel.com/wp-content/uploads/2025/06/5-5.jpg',
-                'SWEATSHIRTS': 'https://srfapparel.com/wp-content/uploads/2023/01/122_9-scaled-600x652.jpg',
-                'TSHIRTS': 'https://srfapparel.com/wp-content/uploads/2025/05/63.jpg',
-                'T-SHIRTS': 'https://srfapparel.com/wp-content/uploads/2025/05/63.jpg',
-                'ACCESSORIES': 'https://srfapparel.com/wp-content/uploads/2023/02/6508_1-600x652.png',
-                'POLOS': 'https://srfapparel.com/wp-content/uploads/2025/06/5-5.jpg',
-                'HATS': 'https://srfapparel.com/wp-content/uploads/2023/04/5-7.jpg',
-                'HEADWEAR': 'https://srfapparel.com/wp-content/uploads/2023/04/5-7.jpg'
+                'SHIRTS & POLOS': 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=600&q=80',
+                'SWEATSHIRTS': '/jacket_wb_front.jpg',
+                'TSHIRTS': '/tshirt_wb_front.jpg',
+                'T-SHIRTS': '/tshirt_wb_front.jpg',
+                'ACCESSORIES': 'https://images.unsplash.com/photo-1509395062183-67c5ad6faff9?auto=format&fit=crop&w=600&q=80',
+                'POLOS': 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=600&q=80',
+                'HATS': '/wb_cap.jpg',
+                'HEADWEAR': '/wb_cap.jpg'
               };
               const bg = bgImages[cat.name.toUpperCase()] || 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800';
               

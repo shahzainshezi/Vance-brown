@@ -99,7 +99,7 @@ export default function ProductPage() {
                       borderRadius: '12px',
                       overflow: 'hidden',
                       cursor: 'pointer',
-                      border: activeImage === img ? '2px solid #82132B' : '2px solid transparent',
+                      border: activeImage === img ? '2px solid #0070FF' : '2px solid transparent',
                       padding: '4px',
                       background: '#fff',
                       transition: 'all 0.2s'
@@ -115,7 +115,7 @@ export default function ProductPage() {
           {/* Right: Product Details */}
           <div style={{ padding: '2rem 0' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-              <span style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px' }}>SRF APPAREL EXCLUSIVE</span>
+              <span style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px' }}>VANCE BROWN EXCLUSIVE</span>
             </div>
             
             <h1 style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', color: '#0f172a', marginBottom: '1rem', lineHeight: '1.1' }}>
@@ -127,7 +127,7 @@ export default function ProductPage() {
             </div>
 
             <p style={{ fontSize: '1.1rem', color: '#475569', lineHeight: '1.6', marginBottom: '2.5rem' }}>
-              {product.description || product.desc || 'Premium SRF workwear engineered for durability and comfort on the job site.'}
+              {product.description || product.desc || 'Premium Vance Brown workwear engineered for durability and comfort on the job site.'}
             </p>
 
             {sizes && (
@@ -218,16 +218,16 @@ export default function ProductPage() {
                   ) : (
                     <ul style={{ paddingLeft: '1.5rem' }}>
                       <li>Heavy-duty 100% breathable material.</li>
-                      <li>SRF Official Logo embroidered on left chest.</li>
+                      <li>Vance Brown Official Logo embroidered on left chest.</li>
                       <li>Machine wash cold, tumble dry low.</li>
-                      <li>Approved for all active SRF field sites.</li>
+                      <li>Approved for all active Vance Brown field sites.</li>
                     </ul>
                   )}
                 </div>
               )}
               {activeTab === 'shipping' && (
                 <p style={{ color: '#475569', lineHeight: '1.6' }}>
-                  Orders placed using SRF Bucks are processed internally. Gear is typically delivered directly to your site supervisor's office within 5-7 business days. 
+                  Orders placed using Builders Bucks are processed internally. Gear is typically delivered directly to your site supervisor's office within 5-7 business days. 
                 </p>
               )}
             </div>

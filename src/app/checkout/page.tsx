@@ -37,7 +37,7 @@ export default function CheckoutPage() {
         </div>
         <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Order Confirmed!</h1>
         <p style={{ color: '#64748b', fontSize: '1.2rem', maxWidth: '600px', marginBottom: '2rem' }}>
-          Your SRF Bucks have been deducted successfully. Your gear will be delivered to your site office shortly.
+          Your Builders Bucks have been deducted successfully. Your gear will be delivered to your site office shortly.
         </p>
         <Link href="/" className="btn btn-glow" style={{ padding: '1rem 3rem' }}>Return to Shop</Link>
       </div>
@@ -109,7 +109,7 @@ export default function CheckoutPage() {
 
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Order Summary ({cart.length} items)</h2>
           {cart.length === 0 ? (
-            <p>Your cart is empty. <Link href="/" style={{ color: '#990A27' }}>Go back to shop.</Link></p>
+            <p>Your cart is empty. <Link href="/" style={{ color: 'var(--primary)' }}>Go back to shop.</Link></p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {cart.map((item) => (
@@ -123,7 +123,7 @@ export default function CheckoutPage() {
                       {item.selectedColor && `Color: ${item.selectedColor}`}
                     </div>
                     <p style={{ color: '#64748b' }}>Qty: {item.quantity}</p>
-                    <p style={{ fontWeight: 'bold', color: '#990A27', marginTop: 'auto', fontSize: '1.1rem' }}>{item.price} SRF Bucks</p>
+                    <p style={{ fontWeight: 'bold', color: 'var(--primary)', marginTop: 'auto', fontSize: '1.1rem' }}>{item.price} Builders Bucks</p>
                   </div>
                 </div>
               ))}
@@ -136,11 +136,11 @@ export default function CheckoutPage() {
           <div style={{ background: '#f8fafc', padding: '2rem', borderRadius: '16px', border: '1px solid #e2e8f0', position: 'sticky', top: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Payment Method</h2>
             
-            <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '2px solid #990A27', marginBottom: '2rem' }}>
+            <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '2px solid var(--primary)', marginBottom: '2rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                <i className='bx bxs-coin-stack' style={{ fontSize: '2rem', color: '#990A27' }}></i>
+                <i className='bx bxs-coin-stack' style={{ fontSize: '2rem', color: 'var(--primary)' }}></i>
                 <div>
-                  <h3 style={{ fontSize: '1.1rem' }}>SRF Bucks Balance</h3>
+                  <h3 style={{ fontSize: '1.1rem' }}>Builders Bucks Balance</h3>
                   <p style={{ color: '#64748b' }}>No credit card required</p>
                 </div>
               </div>
@@ -158,13 +158,13 @@ export default function CheckoutPage() {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.5rem', fontWeight: 'bold', borderTop: '1px solid #e2e8f0', paddingTop: '1rem' }}>
                 <span>Total</span>
-                <span style={{ color: '#990A27' }}>{cartTotal} Bucks</span>
+                <span style={{ color: 'var(--primary)' }}>{cartTotal} Bucks</span>
               </div>
             </div>
 
             {cartTotal > credits ? (
               <div style={{ color: '#ef4444', background: '#fef2f2', padding: '1rem', borderRadius: '8px', textAlign: 'center', marginBottom: '1rem' }}>
-                Insufficient SRF Bucks balance.
+                Insufficient Builders Bucks balance.
               </div>
             ) : (
               <div style={{ color: '#10b981', background: '#ecfdf5', padding: '1rem', borderRadius: '8px', textAlign: 'center', marginBottom: '1rem' }}>

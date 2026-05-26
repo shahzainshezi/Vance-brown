@@ -17,7 +17,7 @@ export default function Header() {
   };
 
   const avatarUrl = currentUser
-    ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=82132b&color=fff&bold=true`
+    ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=0070ff&color=fff&bold=true`
     : `https://ui-avatars.com/api/?name=Guest&background=64748b&color=fff&bold=true`;
 
   return (
@@ -25,28 +25,34 @@ export default function Header() {
       <nav className="navbar">
         <div className="nav-container">
           <Link href="/" className="logo">
-            <img src="/logo.webp" alt="SRF Apparel" className="brand-logo" />
+            <img src="/logo.png" alt="Vance Brown Gear" className="brand-logo" />
           </Link>
 
           <div className="nav-links">
-            <Link href="/" className="nav-link active">Home</Link>
-            <div className="dropdown">
-              <Link href="/#categories" className="nav-link">Apparel <i className='bx bx-chevron-down'></i></Link>
-              <div className="dropdown-content">
-                {categories.map(cat => (
-                  <Link key={cat.id} href={`/category/${cat.id}`}>{cat.name}</Link>
-                ))}
-              </div>
-            </div>
-            <Link href="/#shop" className="nav-link">All Products</Link>
+            {currentUser?.role === 'super_admin' ? (
+              <Link href="/admin" className="nav-link active">Admin Dashboard</Link>
+            ) : (
+              <>
+                <Link href="/" className="nav-link active">Home</Link>
+                <div className="dropdown">
+                  <Link href="/#categories" className="nav-link">Apparel <i className='bx bx-chevron-down'></i></Link>
+                  <div className="dropdown-content">
+                    {categories.map(cat => (
+                      <Link key={cat.id} href={`/category/${cat.id}`}>{cat.name}</Link>
+                    ))}
+                  </div>
+                </div>
+                <Link href="/#shop" className="nav-link">All Products</Link>
+              </>
+            )}
             <div style={{ display: 'flex', alignItems: 'center', marginLeft: '0.5rem' }}>
               <LanguageSwitcher />
             </div>
           </div>
 
           <div className="nav-actions">
-            {/* Credits Badge — only when logged in */}
-            {currentUser && (
+            {/* Credits Badge — only when logged in as employee */}
+            {currentUser && currentUser.role !== 'super_admin' && (
               <div className="credit-badge" title="Your available balance">
                 <div className="credit-icon-wrapper"><i className='bx bxs-coin-stack'></i></div>
                 <div className="credit-text">
@@ -56,8 +62,8 @@ export default function Header() {
               </div>
             )}
 
-            {/* Cart Icon — only when logged in */}
-            {currentUser && (
+            {/* Cart Icon — only when logged in as employee */}
+            {currentUser && currentUser.role !== 'super_admin' && (
               <div className="cart-icon" onClick={() => setIsCartOpen(true)} style={{ cursor: 'pointer' }}>
                 <i className='bx bx-cart-alt'></i>
                 <span className="cart-count">{cart.length}</span>
@@ -75,7 +81,9 @@ export default function Header() {
                     <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#0f172a' }}>{currentUser.name}</div>
                     <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>{currentUser.id}</div>
                   </div>
-                  <Link href="/dashboard"><i className='bx bx-user'></i> Employee Portal</Link>
+                  {currentUser?.role !== 'super_admin' && (
+                    <Link href="/dashboard"><i className='bx bx-user'></i> Employee Portal</Link>
+                  )}
                   {currentUser?.role === 'super_admin' && (
                     <Link href="/admin"><i className='bx bx-shield-quarter'></i> Admin Dashboard</Link>
                   )}
@@ -104,27 +112,30 @@ export default function Header() {
       {/* Mobile Menu Sidebar */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
         <div className="mobile-menu-header">
-          <img src="/logo.webp" alt="SRF" style={{ height: '80px', objectFit: 'contain' }} />
+          <img src="/logo.png" alt="Vance Brown" style={{ height: '80px', objectFit: 'contain' }} />
           <button onClick={() => setIsMobileMenuOpen(false)} style={{ background: 'transparent', border: 'none', fontSize: '1.8rem', color: '#0f172a', cursor: 'pointer' }}>
             <i className='bx bx-x'></i>
           </button>
         </div>
         <div className="mobile-menu-links">
-          <Link href="/" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-          <div style={{ padding: '0.5rem 0', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-            <span style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px' }}>Departments</span>
-            {categories.map(cat => (
-              <Link key={cat.id} href={`/category/${cat.id}`} className="mobile-link" onClick={() => setIsMobileMenuOpen(false)} style={{ paddingLeft: '1rem' }}>
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-          <Link href="/#shop" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>All Products</Link>
-          {currentUser && (
-            <Link href="/dashboard" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>My Dashboard</Link>
-          )}
-          {currentUser?.role === 'admin' && (
-            <Link href="/admin" className="mobile-link" style={{ color: '#82132B' }} onClick={() => setIsMobileMenuOpen(false)}>Admin Panel</Link>
+          {currentUser?.role === 'super_admin' ? (
+            <Link href="/admin" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Admin Dashboard</Link>
+          ) : (
+            <>
+              <Link href="/" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+              <div style={{ padding: '0.5rem 0', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                <span style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px' }}>Departments</span>
+                {categories.map(cat => (
+                  <Link key={cat.id} href={`/category/${cat.id}`} className="mobile-link" onClick={() => setIsMobileMenuOpen(false)} style={{ paddingLeft: '1rem' }}>
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
+              <Link href="/#shop" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>All Products</Link>
+              {currentUser && (
+                <Link href="/dashboard" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>My Dashboard</Link>
+              )}
+            </>
           )}
           
           <div style={{ marginTop: 'auto', paddingTop: '2rem', borderTop: '1px solid #e2e8f0' }}>
@@ -186,7 +197,7 @@ export default function Header() {
                 Balance After Purchase: <span>{credits - cartTotal}</span>
               </div>
 
-              {cartTotal > credits && <p className="error-msg" style={{ display: 'block', marginBottom: '1rem', color: '#ef4444' }}>Insufficient SRF Bucks for this order.</p>}
+              {cartTotal > credits && <p className="error-msg" style={{ display: 'block', marginBottom: '1rem', color: '#ef4444' }}>Insufficient Builders Bucks for this order.</p>}
 
               {cart.length > 0 && cartTotal <= credits ? (
                 <Link href="/checkout" style={{ textDecoration: 'none' }} onClick={() => setIsCartOpen(false)}>

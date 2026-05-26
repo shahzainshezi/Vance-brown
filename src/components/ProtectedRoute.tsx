@@ -10,8 +10,12 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!isAuthLoading && !currentUser) {
-      router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
+    if (!isAuthLoading) {
+      if (!currentUser) {
+        router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
+      } else if (currentUser.role === 'super_admin') {
+        router.replace('/admin');
+      }
     }
   }, [currentUser, isAuthLoading, router, pathname]);
 
@@ -30,7 +34,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
         <div style={{
           width: "50px", height: "50px",
           border: "3px solid rgba(255,255,255,0.1)",
-          borderTopColor: "#82132B",
+          borderTopColor: "var(--primary)",
           borderRadius: "50%",
           animation: "spin 0.8s linear infinite"
         }} />

@@ -8,9 +8,9 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-brand">
           <Link href="/" className="logo">
-            <img src="/logo.webp" alt="SRF Apparel" className="brand-logo" />
+            <img src="/logo.png" alt="Vance Brown" className="brand-logo" />
           </Link>
-          <p>The official merchandise and workwear portal exclusively for SRF employees.</p>
+          <p>The official merchandise and workwear portal exclusively for Vance Brown Builders employees.</p>
         </div>
         <div className="footer-links">
           <h4>Shop</h4>
@@ -27,12 +27,12 @@ export default function Footer() {
         </div>
         <div className="footer-contact">
           <h4>Need Help?</h4>
-          <p><i className='bx bx-envelope'></i> support@srfapparel.com</p>
+          <p><i className='bx bx-envelope'></i> gear@vancebrown.com</p>
           <p><i className='bx bx-buildings'></i> Internal HR Department</p>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2026 SRF Apparel. Internal Use Only.</p>
+        <p>&copy; 2026 Vance Brown Builders. Internal Use Only.</p>
       </div>
     </footer>
   );

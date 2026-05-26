@@ -38,8 +38,12 @@ function LoginForm() {
   // If already logged in, redirect
   useEffect(() => {
     if (currentUser) {
-      const redirect = searchParams.get('redirect') || '/';
-      router.replace(redirect);
+      if (currentUser.role === 'super_admin') {
+        router.replace('/admin');
+      } else {
+        const redirect = searchParams.get('redirect') || '/';
+        router.replace(redirect);
+      }
     }
   }, [currentUser, router, searchParams]);
 
@@ -51,8 +55,7 @@ function LoginForm() {
     try {
       const success = await login(email.trim(), password.trim());
       if (success) {
-        const redirect = searchParams.get('redirect') || '/';
-        router.push(redirect);
+        // Let the useEffect handle role-based redirection
       } else {
         setError("Invalid email or password. Please try again.");
       }
@@ -121,7 +124,7 @@ function LoginForm() {
               width: i === currentSlide ? "28px" : "8px",
               height: "8px",
               borderRadius: "50px",
-              background: i === currentSlide ? "#82132B" : "rgba(255,255,255,0.4)",
+              background: i === currentSlide ? "#0070FF" : "rgba(255,255,255,0.4)",
               border: "none",
               cursor: "pointer",
               padding: 0,
@@ -140,7 +143,7 @@ function LoginForm() {
         position: 'relative',
         zIndex: 10
       }}>
-        <img src="/logo.webp" alt="SRF Apparel" style={{ height: "80px", objectFit: "contain" }} />
+        <img src="/logo.png" alt="Vance Brown Gear" style={{ height: "80px", objectFit: "contain" }} />
       </div>
 
       <div className="login-left" style={{
@@ -154,7 +157,7 @@ function LoginForm() {
       }}>
         <div className="desktop-logo">
           <Link href="/">
-            <img src="/logo.webp" alt="SRF Apparel" className="login-logo" style={{ height: "100px", objectFit: "contain", marginBottom: "3rem" }} />
+            <img src="/logo.png" alt="Vance Brown Gear" className="login-logo" style={{ height: "100px", objectFit: "contain", marginBottom: "3rem" }} />
           </Link>
         </div>
 
@@ -162,8 +165,8 @@ function LoginForm() {
           display: "inline-flex",
           alignItems: "center",
           gap: "0.5rem",
-          background: "rgba(130,19,43,0.4)",
-          border: "1px solid rgba(130,19,43,0.6)",
+          background: "rgba(0,112,255,0.4)",
+          border: "1px solid rgba(0,112,255,0.6)",
           borderRadius: "50px",
           padding: "0.4rem 1rem",
           marginBottom: "1.5rem",
@@ -187,7 +190,7 @@ function LoginForm() {
         }}>
           Your Gear.<br />
           <span style={{
-            background: "linear-gradient(90deg, #ef4444, #82132B)",
+            background: "linear-gradient(90deg, #FFB800, #0070FF)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent"
           }}>Your Credits.</span>
@@ -199,7 +202,7 @@ function LoginForm() {
           lineHeight: "1.7",
           maxWidth: "420px"
         }}>
-          Access your exclusive SRF Apparel employee store. Use your allocated SRF Bucks to order premium workwear delivered straight to your site.
+          Access your exclusive Vance Brown Builders employee store. Use your allocated Builders Bucks to order premium workwear delivered straight to your site.
         </p>
 
         {/* Feature pills */}
@@ -290,7 +293,7 @@ function LoginForm() {
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="yourname@srfapparel.com"
+                  placeholder="yourname@vancebrown.com"
                   autoComplete="email"
                   style={{
                     width: "100%", padding: "0.9rem 1rem 0.9rem 2.8rem",
@@ -301,7 +304,7 @@ function LoginForm() {
                     transition: "border-color 0.3s, box-shadow 0.3s",
                     boxSizing: "border-box"
                   }}
-                  onFocus={e => { e.target.style.borderColor = "#82132B"; e.target.style.boxShadow = "0 0 0 3px rgba(130,19,43,0.15)"; }}
+                  onFocus={e => { e.target.style.borderColor = "#0070FF"; e.target.style.boxShadow = "0 0 0 3px rgba(0,112,255,0.15)"; }}
                   onBlur={e => { e.target.style.borderColor = "rgba(255,255,255,0.3)"; e.target.style.boxShadow = "none"; }}
                 />
               </div>
@@ -337,7 +340,7 @@ function LoginForm() {
                     transition: "border-color 0.3s, box-shadow 0.3s",
                     boxSizing: "border-box"
                   }}
-                  onFocus={e => { e.target.style.borderColor = "#82132B"; e.target.style.boxShadow = "0 0 0 3px rgba(130,19,43,0.15)"; }}
+                  onFocus={e => { e.target.style.borderColor = "#0070FF"; e.target.style.boxShadow = "0 0 0 3px rgba(0,112,255,0.15)"; }}
                   onBlur={e => { e.target.style.borderColor = "rgba(255,255,255,0.3)"; e.target.style.boxShadow = "none"; }}
                 />
                 <button
@@ -363,15 +366,15 @@ function LoginForm() {
               style={{
                 width: "100%", padding: "1rem",
                 background: isLoading
-                  ? "rgba(130,19,43,0.5)"
-                  : "linear-gradient(135deg, #82132B 0%, #c21807 100%)",
+                  ? "rgba(0,112,255,0.5)"
+                  : "linear-gradient(135deg, #0070FF 0%, #FFB800 100%)",
                 border: "none", borderRadius: "10px", color: "white",
                 fontSize: "0.95rem", fontWeight: "800",
                 letterSpacing: "1.5px", textTransform: "uppercase",
                 cursor: isLoading ? "not-allowed" : "pointer",
                 transition: "all 0.3s",
                 marginTop: "0.5rem",
-                boxShadow: isLoading ? "none" : "0 8px 25px rgba(130,19,43,0.45)",
+                boxShadow: isLoading ? "none" : "0 8px 25px rgba(0,112,255,0.45)",
                 display: "flex", alignItems: "center",
                 justifyContent: "center", gap: "0.8rem"
               }}
@@ -401,7 +404,7 @@ function LoginForm() {
             textAlign: "center"
           }}>
             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem", lineHeight: "1.6" }}>
-              🔒 Access restricted to SRF employees only.<br />
+              🔒 Access restricted to Vance Brown employees only.<br />
               Contact your admin if you need access.
             </p>
           </div>

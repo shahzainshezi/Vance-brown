@@ -66,6 +66,7 @@ interface StoreContextType {
   deleteEmployee: (id: string) => Promise<void>;
   orders: Order[];
   updateOrderStatus: (orderId: string, status: string) => Promise<void>;
+  refetchData: () => Promise<void>;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -90,14 +91,14 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
   // Load auth from localStorage on mount
   useEffect(() => {
     setIsMounted(true);
-    const savedUser = localStorage.getItem('srf_user');
+    const savedUser = localStorage.getItem('vb_user');
     if (savedUser) {
       try {
         const user = JSON.parse(savedUser);
         setCurrentUser(user);
         setCredits(user.balance);
       } catch {
-        localStorage.removeItem('srf_user');
+        localStorage.removeItem('vb_user');
       }
     }
     setIsAuthLoading(false);
@@ -113,19 +114,33 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         supabase.from('orders').select('*').order('created_at', { ascending: false })
       ]);
 
-      if (productsRes.data) setGlobalProducts(productsRes.data);
-      if (categoriesRes.data) setCategories(categoriesRes.data);
+      if (categoriesRes.data) {
+        const filteredCategories = categoriesRes.data.filter((c: any) => {
+          const nameUpper = c.name.toUpperCase();
+          return nameUpper !== 'SHIRTS & POLOS' && nameUpper !== 'ACCESSORIES';
+        });
+        setCategories(filteredCategories);
+      }
+
+      if (productsRes.data) {
+        const filteredProducts = productsRes.data.filter((p: any) => {
+          if (!p.category) return true;
+          const catNameUpper = p.category.name.toUpperCase();
+          return catNameUpper !== 'SHIRTS & POLOS' && catNameUpper !== 'ACCESSORIES';
+        });
+        setGlobalProducts(filteredProducts);
+      }
       if (employeesRes.data) {
         setEmployees(employeesRes.data);
         // Sync balance from DB for logged-in user
-        const savedUser = localStorage.getItem('srf_user');
+        const savedUser = localStorage.getItem('vb_user');
         if (savedUser) {
           const user = JSON.parse(savedUser);
           const freshUser = employeesRes.data.find((e: Employee) => e.id === user.id);
           if (freshUser) {
             setCredits(freshUser.balance);
             setCurrentUser(freshUser);
-            localStorage.setItem('srf_user', JSON.stringify(freshUser));
+            localStorage.setItem('vb_user', JSON.stringify(freshUser));
           }
         }
       }
@@ -170,7 +185,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       };
       setCurrentUser(user);
       setCredits(user.balance);
-      localStorage.setItem('srf_user', JSON.stringify(user));
+      localStorage.setItem('vb_user', JSON.stringify(user));
       return true;
     } catch {
       return false;
@@ -181,20 +196,20 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
     setCurrentUser(null);
     setCredits(0);
     setCart([]);
-    localStorage.removeItem('srf_user');
-    localStorage.removeItem('srf_cart');
+    localStorage.removeItem('vb_user');
+    localStorage.removeItem('vb_cart');
   };
 
   // Keep cart in localStorage
   useEffect(() => {
     if (isMounted && cart.length > 0) {
-      localStorage.setItem('srf_cart', JSON.stringify(cart));
+      localStorage.setItem('vb_cart', JSON.stringify(cart));
     }
   }, [cart, isMounted]);
 
   useEffect(() => {
     if (isMounted) {
-      const savedCart = localStorage.getItem('srf_cart');
+      const savedCart = localStorage.getItem('vb_cart');
       if (savedCart) setCart(JSON.parse(savedCart));
     }
   }, [isMounted]);
@@ -246,7 +261,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       setCredits(newBalance);
       const updatedUser = { ...currentUser, balance: newBalance };
       setCurrentUser(updatedUser);
-      localStorage.setItem('srf_user', JSON.stringify(updatedUser));
+      localStorage.setItem('vb_user', JSON.stringify(updatedUser));
       setEmployees(prev => prev.map(emp => emp.id === currentUser.id ? { ...emp, balance: newBalance } : emp));
 
       const newOrderLocal = {
@@ -261,7 +276,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       setOrders(prev => [newOrderLocal, ...prev]);
 
       setCart([]);
-      localStorage.removeItem('srf_cart');
+      localStorage.removeItem('vb_cart');
       setIsCartOpen(false);
       return true;
     }
@@ -269,8 +284,28 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateOrderStatus = async (orderId: string, status: string) => {
-    await supabase.from('orders').update({ status }).eq('id', orderId);
-    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status } : o));
+    try {
+      const response = await fetch('/api/update-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderId, status }),
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || result.error) {
+        console.error("API error updating status:", result.error);
+        alert("Database error: " + (result.error || "Failed to update status"));
+        return;
+      }
+      
+      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status } : o));
+    } catch (err: any) {
+      console.error("Exception in updateOrderStatus:", err);
+      alert("Error: " + err.message);
+    }
   };
 
   // --- ADMIN FUNCTIONS ---
@@ -346,7 +381,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       setCredits(newBalance);
       const updatedUser = { ...currentUser, balance: newBalance };
       setCurrentUser(updatedUser);
-      localStorage.setItem('srf_user', JSON.stringify(updatedUser));
+      localStorage.setItem('vb_user', JSON.stringify(updatedUser));
     }
   };
 
@@ -357,7 +392,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       setCredits(250);
       const updatedUser = { ...currentUser, balance: 250 };
       setCurrentUser(updatedUser);
-      localStorage.setItem('srf_user', JSON.stringify(updatedUser));
+      localStorage.setItem('vb_user', JSON.stringify(updatedUser));
     }
   };
 
@@ -408,7 +443,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         setCredits(empData.balance);
         const updatedUser = { ...currentUser, ...updateData };
         setCurrentUser(updatedUser);
-        localStorage.setItem('srf_user', JSON.stringify(updatedUser));
+        localStorage.setItem('vb_user', JSON.stringify(updatedUser));
       }
     }
   };
@@ -450,7 +485,8 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         editEmployee,
         deleteEmployee,
         orders,
-        updateOrderStatus
+        updateOrderStatus,
+        refetchData: fetchData
       }}
     >
       {isLoading ? (

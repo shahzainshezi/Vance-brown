@@ -25,6 +25,7 @@ export default function AdminDashboard() {
   const [isSavingEmp, setIsSavingEmp] = useState(false);
   const [editingEmpId, setEditingEmpId] = useState<string | null>(null);
   const [empForm, setEmpForm] = useState({ name: '', email: '', password: '', site: '', balance: '250', role: 'employee' });
+  const [empSearchQuery, setEmpSearchQuery] = useState('');
   
   // Product Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,7 +111,7 @@ export default function AdminDashboard() {
           </div>
           <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)' }}>
             <div style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Total Bucks Issued</div>
-            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#82132B' }}>{employees.reduce((acc, emp) => acc + emp.balance, 0)} <i className='bx bxs-coin-stack' style={{ fontSize: '1.5rem' }}></i></div>
+            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#0070FF' }}>{employees.reduce((acc, emp) => acc + emp.balance, 0)} <i className='bx bxs-coin-stack' style={{ fontSize: '1.5rem' }}></i></div>
           </div>
           <div style={{ background: '#171717', border: '1px solid #333', color: 'white', borderRadius: '16px', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
             <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Pending Orders</div>
@@ -176,7 +177,7 @@ export default function AdminDashboard() {
                             <span style={{ fontWeight: '600', color: '#0f172a' }}>{product.title}</span>
                           </td>
                           <td style={{ padding: '1.2rem', color: '#64748b' }}>{product.category?.name || 'Uncategorized'}</td>
-                          <td style={{ padding: '1.2rem', fontWeight: '700', color: '#82132B' }}>{product.price} <i className='bx bxs-coin-stack'></i></td>
+                          <td style={{ padding: '1.2rem', fontWeight: '700', color: '#0070FF' }}>{product.price} <i className='bx bxs-coin-stack'></i></td>
                           <td style={{ padding: '1.2rem' }}>
                             {product.is_top_pick ? <span style={{ background: '#ecfdf5', color: '#10b981', padding: '0.3rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold' }}>Yes</span> : <span style={{ background: '#f1f5f9', color: '#64748b', padding: '0.3rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold' }}>No</span>}
                           </td>
@@ -219,7 +220,7 @@ export default function AdminDashboard() {
                                 type="text" 
                                 value={editingCategory?.name || ''} 
                                 onChange={e => setEditingCategory(prev => prev ? { ...prev, name: e.target.value } : null)}
-                                style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #82132B', width: '100%' }}
+                                style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #0070FF', width: '100%' }}
                                 autoFocus
                               />
                             ) : (
@@ -278,55 +279,101 @@ export default function AdminDashboard() {
                   <h2 style={{ fontSize: '2rem', color: '#0f172a' }}>Employee Accounts</h2>
                   <div style={{ display: 'flex', gap: '1rem' }}>
                     <button className="btn btn-secondary" onClick={issueAnnualBucks}><i className='bx bx-refresh'></i> Issue Annual Bucks</button>
-                    <button className="btn btn-glow" onClick={() => { setEditingEmpId(null); setEmpForm({ name: '', email: '', password: 'srf2024', site: '', balance: '250', role: 'employee' }); setIsEmpModalOpen(true); }}><i className='bx bx-user-plus'></i> Add Employee</button>
+                    <button className="btn btn-glow" onClick={() => { setEditingEmpId(null); setEmpForm({ name: '', email: '', password: 'vance2026', site: '', balance: '250', role: 'employee' }); setIsEmpModalOpen(true); }}><i className='bx bx-user-plus'></i> Add Employee</button>
                   </div>
                 </div>
-                
-                <div className="table-container">
-                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead>
-                      <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
-                        <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Employee</th>
-                        <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Location</th>
-                        <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Role</th>
-                        <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Balance</th>
-                        <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600', textAlign: 'right' }}>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {employees.map(emp => (
-                        <tr key={emp.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                          <td style={{ padding: '1.2rem' }}>
-                            <div style={{ fontWeight: '700', color: '#0f172a', marginBottom: '0.2rem' }}>{emp.name}</div>
-                            <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{emp.id} • {emp.email}</div>
-                          </td>
-                          <td style={{ padding: '1.2rem', color: '#475569' }}>{emp.site}</td>
-                          <td style={{ padding: '1.2rem' }}>
-                            {emp.role === 'super_admin'
-                              ? <span style={{ background: '#fef3c7', color: '#d97706', padding: '0.3rem 0.7rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: '700' }}>⭐ Super Admin</span>
-                              : <span style={{ background: '#f0fdf4', color: '#16a34a', padding: '0.3rem 0.7rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: '700' }}>Employee</span>
-                            }
-                          </td>
-                          <td style={{ padding: '1.2rem' }}>
-                            <span style={{ fontWeight: '800', color: emp.balance > 0 ? '#82132B' : '#ef4444' }}>{emp.balance} <i className='bx bxs-coin-stack'></i></span>
-                          </td>
-                          <td style={{ padding: '1.2rem', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <button onClick={() => {
-                              setEditingEmpId(emp.id);
-                              setEmpForm({ name: emp.name, email: emp.email, password: '', site: emp.site || '', balance: emp.balance.toString(), role: emp.role || 'employee' });
-                              setIsEmpModalOpen(true);
-                            }} style={{ background: 'transparent', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '1.2rem', marginRight: '0.5rem' }}><i className='bx bx-edit'></i></button>
-                            {emp.role !== 'super_admin' && (
-                              <button onClick={() => { if(confirm(`Delete ${emp.name}?`)) deleteEmployee(emp.id); }} style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}><i className='bx bx-trash'></i></button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+
+                {/* Employee Search Bar */}
+                <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
+                  <i className='bx bx-search' style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '1.2rem' }}></i>
+                  <input
+                    type="text"
+                    placeholder="Search employees by name, email, ID, or location..."
+                    value={empSearchQuery}
+                    onChange={(e) => setEmpSearchQuery(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.8rem 1rem 0.8rem 3rem',
+                      borderRadius: '10px',
+                      border: '1px solid #e2e8f0',
+                      outline: 'none',
+                      fontSize: '0.95rem',
+                      color: '#0f172a',
+                      background: '#ffffff',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+                      transition: 'border-color 0.2s, box-shadow 0.2s'
+                    }}
+                    onFocus={e => { e.target.style.borderColor = '#0070FF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,112,255,0.1)'; }}
+                    onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
+                  />
                 </div>
-              </div>
-            )}
+                
+                 <div className="table-container">
+                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                     <thead>
+                       <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+                         <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Employee</th>
+                         <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Location</th>
+                         <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Role</th>
+                         <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600' }}>Balance</th>
+                         <th style={{ padding: '1.2rem', color: '#64748b', fontWeight: '600', textAlign: 'right' }}>Actions</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       {employees.filter(emp => 
+                         emp.name.toLowerCase().includes(empSearchQuery.toLowerCase()) ||
+                         emp.email.toLowerCase().includes(empSearchQuery.toLowerCase()) ||
+                         emp.id.toLowerCase().includes(empSearchQuery.toLowerCase()) ||
+                         (emp.site && emp.site.toLowerCase().includes(empSearchQuery.toLowerCase()))
+                       ).length === 0 ? (
+                         <tr>
+                           <td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+                             <i className='bx bx-user-x' style={{ fontSize: '2.5rem', marginBottom: '0.5rem', display: 'block' }}></i>
+                             No employees found matching "{empSearchQuery}"
+                           </td>
+                         </tr>
+                       ) : (
+                         employees
+                           .filter(emp => 
+                             emp.name.toLowerCase().includes(empSearchQuery.toLowerCase()) ||
+                             emp.email.toLowerCase().includes(empSearchQuery.toLowerCase()) ||
+                             emp.id.toLowerCase().includes(empSearchQuery.toLowerCase()) ||
+                             (emp.site && emp.site.toLowerCase().includes(empSearchQuery.toLowerCase()))
+                           )
+                           .map(emp => (
+                             <tr key={emp.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                               <td style={{ padding: '1.2rem' }}>
+                                 <div style={{ fontWeight: '700', color: '#0f172a', marginBottom: '0.2rem' }}>{emp.name}</div>
+                                 <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{emp.id} • {emp.email}</div>
+                               </td>
+                               <td style={{ padding: '1.2rem', color: '#475569' }}>{emp.site}</td>
+                               <td style={{ padding: '1.2rem' }}>
+                                 {emp.role === 'super_admin'
+                                   ? <span style={{ background: '#fef3c7', color: '#d97706', padding: '0.3rem 0.7rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: '700' }}>⭐ Super Admin</span>
+                                   : <span style={{ background: '#f0fdf4', color: '#16a34a', padding: '0.3rem 0.7rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: '700' }}>Employee</span>
+                                 }
+                               </td>
+                               <td style={{ padding: '1.2rem' }}>
+                                 <span style={{ fontWeight: '800', color: emp.balance > 0 ? '#0070FF' : '#ef4444' }}>{emp.balance} <i className='bx bxs-coin-stack'></i></span>
+                               </td>
+                               <td style={{ padding: '1.2rem', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                 <button onClick={() => {
+                                   setEditingEmpId(emp.id);
+                                   setEmpForm({ name: emp.name, email: emp.email, password: '', site: emp.site || '', balance: emp.balance.toString(), role: emp.role || 'employee' });
+                                   setIsEmpModalOpen(true);
+                                 }} style={{ background: 'transparent', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '1.2rem', marginRight: '0.5rem' }}><i className='bx bx-edit'></i></button>
+                                 {emp.role !== 'super_admin' && (
+                                   <button onClick={() => { if(confirm(`Delete ${emp.name}?`)) deleteEmployee(emp.id); }} style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}><i className='bx bx-trash'></i></button>
+                                 )}
+                               </td>
+                             </tr>
+                           ))
+                       )}
+                     </tbody>
+                   </table>
+                 </div>
+               </div>
+             )}
 
             {activeTab === 'orders' && (
               <div>
@@ -350,7 +397,7 @@ export default function AdminDashboard() {
                             <div style={{ color: '#64748b', fontSize: '0.95rem' }}>{order.date} • {order.items} Items</div>
                           </div>
                           <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <div style={{ fontWeight: '800', color: '#82132B', fontSize: '1.2rem' }}>{order.total} Bucks</div>
+                            <div style={{ fontWeight: '800', color: '#0070FF', fontSize: '1.2rem' }}>{order.total} Bucks</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                               <select 
                                 value={order.status} 
@@ -424,7 +471,7 @@ export default function AdminDashboard() {
                                       </div>
                                     </div>
                                     <div style={{ textAlign: 'right' }}>
-                                      <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#82132B' }}>{item.price} Bucks</div>
+                                      <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#0070FF' }}>{item.price} Bucks</div>
                                       <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Qty: {item.quantity}</div>
                                     </div>
                                   </div>
@@ -487,7 +534,7 @@ export default function AdminDashboard() {
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#64748b', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Price (SRF Bucks) *</label>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#64748b', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Price (Builders Bucks) *</label>
                   <input type="number" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})}
                     style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
                     placeholder="150" />
@@ -549,7 +596,7 @@ export default function AdminDashboard() {
               {/* Top Pick Toggle */}
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '0.8rem 1rem', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', background: formData.isTopPick ? '#fff7ed' : '#fff' }}>
                 <input type="checkbox" checked={formData.isTopPick} onChange={e => setFormData({...formData, isTopPick: e.target.checked})}
-                  style={{ width: '18px', height: '18px', accentColor: '#82132B' }} />
+                  style={{ width: '18px', height: '18px', accentColor: '#0070FF' }} />
                 <div>
                   <div style={{ fontWeight: '600', fontSize: '0.9rem', color: '#0f172a' }}>⭐ Show in Top Picks</div>
                   <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Display on homepage carousel</div>
@@ -606,7 +653,7 @@ export default function AdminDashboard() {
                   type="email"
                   value={empForm.email}
                   onChange={e => setEmpForm({...empForm, email: e.target.value})}
-                  placeholder="employee@srfapparel.com"
+                  placeholder="employee@vancebrown.com"
                   style={{ width: '100%', padding: '0.9rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '1rem', color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
                 />
               </div>
@@ -619,13 +666,13 @@ export default function AdminDashboard() {
                     type="text"
                     value={empForm.password}
                     onChange={e => setEmpForm({...empForm, password: e.target.value})}
-                    placeholder={editingEmpId ? '********' : 'srf2024'}
+                    placeholder={editingEmpId ? '********' : 'vance2026'}
                     style={{ width: '100%', padding: '0.9rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '1rem', color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
                   />
                 </div>
                 {/* Starting Balance */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#64748b', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>SRF Bucks</label>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#64748b', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Builders Bucks</label>
                   <input
                     type="number"
                     value={empForm.balance}

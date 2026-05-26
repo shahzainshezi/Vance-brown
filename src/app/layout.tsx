@@ -12,8 +12,8 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-body' });
 const outfit = Outfit({ subsets: ["latin"], variable: '--font-heading' });
 
 export const metadata: Metadata = {
-  title: "SRF SHOP - Premium Employee Portal",
-  description: "Exclusive SRF Apparel store for employees.",
+  title: "Vance Brown Gear - Premium Employee Store",
+  description: "Exclusive Vance Brown Builders apparel and gear store for employees.",
 };
 
 export default function RootLayout({
@@ -41,7 +41,7 @@ export default function RootLayout({
             function googleTranslateElementInit() {
               new google.translate.TranslateElement({
                 pageLanguage: 'en',
-                includedLanguages: 'en,es,de,fr,it',
+                includedLanguages: 'en,es',
                 autoDisplay: false
               }, 'google_translate_element');
             }

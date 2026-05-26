@@ -4,16 +4,31 @@ import { useStore } from "@/context/StoreContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageHero from "@/components/PageHero";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 export default function UserDashboard() {
-  const { credits, orders, currentUser } = useStore();
+  const { credits, orders, currentUser, refetchData } = useStore();
   const [activeTab, setActiveTab] = useState('overview');
 
+  useEffect(() => {
+    if (refetchData) {
+      refetchData();
+      
+      // Poll for updates every 5 seconds
+      const interval = setInterval(() => {
+        refetchData();
+      }, 5000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [refetchData]);
+
+  const myOrders = orders.filter(o => o.employee_id === currentUser?.id);
+
   const balanceBadge = (
-    <div style={{ background: 'rgba(130,19,43,0.55)', border: '1px solid rgba(130,19,43,0.7)', backdropFilter: 'blur(10px)', borderRadius: '14px', padding: '0.8rem 1.3rem', textAlign: 'center' }}>
-      <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.7rem', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '0.25rem' }}>SRF Bucks</div>
+    <div style={{ background: 'rgba(0,112,255,0.55)', border: '1px solid rgba(0,112,255,0.7)', backdropFilter: 'blur(10px)', borderRadius: '14px', padding: '0.8rem 1.3rem', textAlign: 'center' }}>
+      <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.7rem', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Builders Bucks</div>
       <div style={{ color: 'white', fontSize: '1.8rem', fontWeight: '900', lineHeight: 1 }}>{credits} <i className='bx bxs-coin-stack' style={{ fontSize: '1.2rem', color: '#fca5a5' }}></i></div>
     </div>
   );
@@ -63,33 +78,33 @@ export default function UserDashboard() {
                 
                 <div className="responsive-two-col" style={{ marginBottom: '3rem' }}>
                   <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)' }}>
-                    <h3 style={{ fontSize: '1.1rem', color: '#64748b', marginBottom: '1rem' }}>Available SRF Bucks</h3>
+                    <h3 style={{ fontSize: '1.1rem', color: '#64748b', marginBottom: '1rem' }}>Available Builders Bucks</h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <i className='bx bxs-coin-stack' style={{ fontSize: '3rem', color: '#82132B' }}></i>
+                      <i className='bx bxs-coin-stack' style={{ fontSize: '3rem', color: '#0070FF' }}></i>
                       <span style={{ fontSize: '3.5rem', fontWeight: '800', color: '#0f172a', lineHeight: 1 }}>{credits}</span>
                     </div>
                     <div style={{ marginTop: '1.5rem', width: '100%', height: '8px', background: '#e2e8f0', borderRadius: '10px', overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${(credits/250)*100}%`, background: '#82132B' }}></div>
+                      <div style={{ height: '100%', width: `${(credits/250)*100}%`, background: '#0070FF' }}></div>
                     </div>
                     <p style={{ fontSize: '0.9rem', color: '#64748b', marginTop: '0.8rem' }}>Resets annually. Max 250 Bucks.</p>
                   </div>
 
                   <div style={{ background: '#171717', color: 'white', border: '1px solid #333', borderRadius: '16px', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Need New Gear?</h3>
-                    <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '1.5rem', lineHeight: '1.6' }}>Use your allocated budget to order premium SRF approved workwear directly to your site.</p>
+                    <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '1.5rem', lineHeight: '1.6' }}>Use your allocated budget to order premium Vance Brown approved workwear directly to your site.</p>
                     <Link href="/#shop" className="btn btn-glow" style={{ alignSelf: 'flex-start' }}>Browse Catalog</Link>
                   </div>
                 </div>
 
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: '#0f172a' }}>Recent Orders</h3>
-                {orders.length === 0 ? <p style={{ color: '#64748b' }}>No recent orders.</p> : orders.slice(0,1).map(order => (
+                {myOrders.length === 0 ? <p style={{ color: '#64748b' }}>No recent orders.</p> : myOrders.slice(0,1).map(order => (
                   <div key={order.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', border: '1px solid #e2e8f0', borderRadius: '12px', background: '#fff' }}>
                     <div>
                       <div style={{ fontWeight: '700', fontSize: '1.2rem', marginBottom: '0.3rem' }}>{order.id}</div>
                       <div style={{ color: '#64748b', fontSize: '0.95rem' }}>{order.date} • {order.items} Items</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontWeight: '800', color: '#82132B', fontSize: '1.2rem', marginBottom: '0.3rem' }}>{order.total} Bucks</div>
+                      <div style={{ fontWeight: '800', color: '#0070FF', fontSize: '1.2rem', marginBottom: '0.3rem' }}>{order.total} Bucks</div>
                       <span style={{ padding: '0.3rem 0.8rem', background: '#ecfdf5', color: '#10b981', borderRadius: '50px', fontSize: '0.85rem', fontWeight: '600' }}>{order.status}</span>
                     </div>
                   </div>
@@ -101,14 +116,14 @@ export default function UserDashboard() {
               <div>
                  <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: '#0f172a' }}>Order History</h2>
                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {orders.length === 0 ? <p style={{ color: '#64748b' }}>You haven't placed any orders yet.</p> : orders.map(order => (
+                    {myOrders.length === 0 ? <p style={{ color: '#64748b' }}>You haven't placed any orders yet.</p> : myOrders.map(order => (
                       <div key={order.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', border: '1px solid #e2e8f0', borderRadius: '12px', background: '#fff' }}>
                         <div>
                           <div style={{ fontWeight: '700', fontSize: '1.2rem', marginBottom: '0.3rem' }}>{order.id}</div>
                           <div style={{ color: '#64748b', fontSize: '0.95rem' }}>{order.date} • {order.items} Items</div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontWeight: '800', color: '#82132B', fontSize: '1.2rem', marginBottom: '0.3rem' }}>{order.total} Bucks</div>
+                          <div style={{ fontWeight: '800', color: '#0070FF', fontSize: '1.2rem', marginBottom: '0.3rem' }}>{order.total} Bucks</div>
                           <span style={{ 
                             padding: '0.3rem 0.8rem', 
                             background: order.status === 'Delivered' || order.status === 'Fulfilled' ? '#ecfdf5' : 

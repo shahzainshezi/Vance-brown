@@ -1,8 +1,8 @@
 export const products = [
     {
         id: 1,
-        title: "SRF Premium Polo",
-        desc: "Breathable, moisture-wicking deep red polo with embroidered company logo. Perfect for site visits.",
+        title: "Vance Brown Premium Polo",
+        desc: "Breathable, moisture-wicking royal blue polo with embroidered company logo. Perfect for site visits.",
         price: 45,
         image: "/cat_polos.jpg",
         badge: "Popular",
@@ -10,7 +10,7 @@ export const products = [
     },
     {
         id: 2,
-        title: "SRF Camo Hat",
+        title: "Vance Brown Camo Hat",
         desc: "Classic camo cap with adjustable strap and premium logo embroidery.",
         price: 25,
         image: "/cat_hats.jpg",
@@ -28,8 +28,8 @@ export const products = [
     },
     {
         id: 4,
-        title: "SRF Field Polo",
-        desc: "Comfortable cotton blend polo with the SRF motif. Professional and durable.",
+        title: "Vance Brown Field Polo",
+        desc: "Comfortable cotton blend polo with the Vance Brown motif. Professional and durable.",
         price: 40,
         image: "/cat_polos.jpg",
         badge: "",
@@ -55,7 +55,7 @@ export const products = [
     },
     {
         id: 7,
-        title: "SRF Elite Jacket",
+        title: "Vance Brown Elite Jacket",
         desc: "Waterproof, wind-resistant workwear jacket with reflective piping.",
         price: 110,
         image: "/cat_sweatshirts.jpg",
@@ -74,7 +74,7 @@ export const products = [
     {
         id: 9,
         title: "Winter Beanie",
-        desc: "Keep your head warm with this SRF branded heavy knit beanie.",
+        desc: "Keep your head warm with this Vance Brown branded heavy knit beanie.",
         price: 18,
         image: "/cat_hats.jpg",
         badge: "Popular",
